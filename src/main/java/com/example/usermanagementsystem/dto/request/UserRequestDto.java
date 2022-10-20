@@ -1,4 +1,4 @@
-package com.example.usermanagementsystem.dto;
+package com.example.usermanagementsystem.dto.request;
 
 import com.example.usermanagementsystem.lib.ValidPassword;
 import com.example.usermanagementsystem.lib.ValidRolesSet;
@@ -27,7 +27,7 @@ public class UserRequestDto {
     @Pattern(regexp = "[a-zA-Z]+", message = "Lastname must contains only latin letters")
     private String lastName;
     @ValidRolesSet(message = "should have set id of existed roles")
-    private Set<Long> roleIds;
-    @ValidStatus(message = "should contain ACTIVE or INACTIVE")
+    private String role;
+    @ValidStatus(message = "only ACTIVE or INACTIVE")
     private String status;
 }

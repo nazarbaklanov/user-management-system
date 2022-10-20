@@ -17,16 +17,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DataInitializer {
     private static final String ADMIN_LOGIN = "admin";
-    private static final String ADMIN_PASSWORD = "admin";
+    private static final String ADMIN_PASSWORD = "admin123";
     private static final String ADMIN_FIRSTNAME = "Ivan";
     private static final String ADMIN_LASTNAME = "Ivanov";
     private static final String USER_FIRSTNAME = "Pety";
     private static final String USER_LASTNAME = "Petrov";
     private static final String USER_LOGIN = "user";
-    private static final String USER_PASSWORD = "user";
+    private static final String USER_PASSWORD = "user123";
     private final RoleService roleService;
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     public void dataInit() {
@@ -37,11 +36,11 @@ public class DataInitializer {
         } catch (UserOrRoleNotFoundException e) {
             User adminUser = new User();
             adminUser.setName(ADMIN_LOGIN);
-            adminUser.setPassword(passwordEncoder.encode(ADMIN_PASSWORD));
+            adminUser.setPassword(ADMIN_PASSWORD);
             adminUser.setFirstName(ADMIN_FIRSTNAME);
             adminUser.setLastName(ADMIN_LASTNAME);
             adminUser.setStatus(Status.ACTIVE);
-            adminUser.setRoles(Set.of(adminRole, userRole));
+            adminUser.setRole(roleService.findByName(RoleName.ADMIN));
             userService.save(adminUser);
         }
         try {
@@ -49,11 +48,11 @@ public class DataInitializer {
         } catch (UserOrRoleNotFoundException e) {
             User userUser = new User();
             userUser.setName(USER_LOGIN);
-            userUser.setPassword(passwordEncoder.encode(USER_PASSWORD));
+            userUser.setPassword(USER_PASSWORD);
             userUser.setFirstName(USER_FIRSTNAME);
             userUser.setLastName(USER_LASTNAME);
             userUser.setStatus(Status.ACTIVE);
-            userUser.setRoles(Set.of(userRole));
+            userUser.setRole(roleService.findByName(RoleName.USER));
             userService.save(userUser);
         }
     }

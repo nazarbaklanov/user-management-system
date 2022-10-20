@@ -1,6 +1,7 @@
 package com.example.usermanagementsystem.security.jwt;
 
 import com.example.usermanagementsystem.exception.InvalidJwtAuthenticationException;
+import com.example.usermanagementsystem.model.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -35,9 +36,9 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    public String createToken(String login, List<String> roles) {
+    public String createToken(String login, Role role) {
         Claims claims = Jwts.claims().setSubject(login);
-        claims.put("roles", roles);
+        claims.put("role", role);
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
         return Jwts.builder()

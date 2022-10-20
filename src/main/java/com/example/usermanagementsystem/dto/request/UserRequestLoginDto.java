@@ -1,10 +1,10 @@
-package com.example.usermanagementsystem.dto;
+package com.example.usermanagementsystem.dto.request;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class UserLoginDto {
+public class UserRequestLoginDto {
     @NotBlank(message = "login must be not blank")
     private String login;
     @NotBlank(message = "login must be not blank")

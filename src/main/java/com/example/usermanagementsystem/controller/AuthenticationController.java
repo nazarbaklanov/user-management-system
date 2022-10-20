@@ -1,11 +1,10 @@
 package com.example.usermanagementsystem.controller;
 
-import com.example.usermanagementsystem.dto.UserLoginDto;
+import com.example.usermanagementsystem.dto.request.UserRequestLoginDto;
 import com.example.usermanagementsystem.model.User;
 import com.example.usermanagementsystem.security.AuthenticationService;
 import com.example.usermanagementsystem.security.jwt.JwtTokenProvider;
 import java.util.Map;
-import java.util.stream.Collectors;
 import javax.naming.AuthenticationException;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +21,13 @@ public class AuthenticationController {
     private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody @Valid UserLoginDto userLoginDto)
+    public ResponseEntity<Object> login(@RequestBody @Valid UserRequestLoginDto userLoginDto)
             throws AuthenticationException {
         User user = authenticationService.login(
                 userLoginDto.getLogin(),
                 userLoginDto.getPassword());
         String token = jwtTokenProvider.createToken(user.getName(),
-                user.getRoles().stream()
-                        .map(r -> r.getName().name())
-                        .collect(Collectors.toList()));
+                user.getRole());
         return new ResponseEntity<>(Map.of("token", token), HttpStatus.OK);
     }
 }

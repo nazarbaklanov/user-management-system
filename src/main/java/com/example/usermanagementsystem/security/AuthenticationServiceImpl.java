@@ -1,6 +1,7 @@
 package com.example.usermanagementsystem.security;
 
 import com.example.usermanagementsystem.exception.UserOrRoleNotFoundException;
+import com.example.usermanagementsystem.model.Status;
 import com.example.usermanagementsystem.model.User;
 import com.example.usermanagementsystem.service.UserService;
 import javax.naming.AuthenticationException;
@@ -22,7 +23,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (UserOrRoleNotFoundException e) {
             throw new AuthenticationException("Incorrect user or password");
         }
-        if (passwordEncoder.matches(password, user.getPassword())) {
+        if (passwordEncoder.matches(password, user.getPassword()) && user.getStatus() == Status.ACTIVE) {
             return user;
         }
         throw new AuthenticationException("Incorrect user or password");
